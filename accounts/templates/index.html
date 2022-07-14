@@ -173,12 +173,12 @@
                   <form method="get" action="" style="display: flex;">
 
                     <input
-                    type="text"
+                    type="search"
                     class="form-control"
                     placeholder="Search&hellip;"
                     name="q"
                     />
-                    <p><input class="btn btn-primary" type="submit" value="qidirish"></p>
+                    <!-- <p><input class="btn btn-primary" type="submit" value="qidirish"></p> -->
 
                   </form>
                 </div>
@@ -230,13 +230,14 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.telefon }}</td>
                 <td>
-                  <a href="#" class="edit" title="Edit" data-toggle="tooltip"
+                  <a href="{% url 'user_edit' user.id %}" class="edit" title="Edit" data-toggle="tooltip"
                     ><i class="material-icons">&#xE254;</i></a
                   >
                   <a
-                    <!-- href="{% url 'delete' profile.id %}" -->
+                    href="{% url 'user_delete' user.id %}"
                     class="delete"
                     title="Delete"
+                    onclick="return confirm('Ochirib tashlamoqchimisiz')"
                     data-toggle="tooltip"
                     ><i class="material-icons">&#xE872;</i></a
                   >

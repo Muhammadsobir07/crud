@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Profile
@@ -84,7 +85,40 @@ def logout_user(request):
     logout(request)
     return HttpResponseRedirect("/")
 
-def delete(request,id):
-    brbalo = get_object_or_404(Profile, id=id)
-    brbalo.delete()
-    return redirect("home")
+def user_delete(request,id):
+    user = get_object_or_404(Profile, id=id)
+    user.delete()
+    return HttpResponseRedirect("/home")
+
+
+def user_edit(request,id):
+    user = get_object_or_404(Profile, id=id)
+    context = {
+        "user":user
+    }
+    return render(request, 'edit.html',context)
+
+
+
+def user_edit_save(request):
+    if request.method != "POST":
+        return HttpResponse("Xatolik yuz berdi")
+    else:
+        user_id = request.POST.get("id")
+        username = request.POST.get("username")
+        ism = request.POST.get("first_name")
+        familiya = request.POST.get("last_name")
+        email = request.POST.get("email")
+        telefon = request.POST.get("telefon")
+        try:
+            user = get_object_or_404(Profile, id=user_id)
+            user.username = username
+            user.first_name = ism
+            user.last_name = familiya
+            user.email = email
+            user.telefon = telefon
+            user.save()
+            return HttpResponseRedirect("/home")
+        except:
+            return HttpResponseRedirect("home/edit/",kwargs={"id":user_id})
+
